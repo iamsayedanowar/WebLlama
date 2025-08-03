@@ -1,4 +1,4 @@
-![WebLlama](https://raw.githubusercontent.com/iamsayedanowar/WebLlama/refs/heads/main/img/GRP.png)
+![WebLlama](https://raw.githubusercontent.com/iamsayedanowar/WebLlama/refs/heads/main/GRP.png)
 
 # WebLlama
 
