@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="shortcut icon" href="/webllama.png" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <title>WebLlama</title>
+</head>
+
+<body>
+    <header>
+        <h1>What do you want to build ?</h1>
+        <p>Describe your website and let AI create it for you!</p>
+    </header>
+    <div class="prompt-section">
+        <textarea class="promptInput" id="promptInput"
+            placeholder="Create a modern portfolio website for a photographer with a dark theme, gallery section, and contact form"></textarea>
+        <div class="api-input-section">
+            <input type="password" id="apiKeyInput" class="apiKeyInput"
+                placeholder="Enter your OpenRouter API key (Required)" required>
+            <small class="api-help-text">
+                Get your free API key from
+                <a href="https://openrouter.ai/settings/keys" target="_blank">OpenRouter.ai</a>
+            </small>
+        </div>
+        <div class="model-select-section">
+            <select id="modelSelect" class="modelSelect">
+                <option value="qwen/qwen3-coder:free">Qwen3 Coder (free)</option>
+                <option value="deepseek/deepseek-r1:free">DeepSeek R1 (free)</option>
+                <option value="deepseek/deepseek-r1-0528:free">DeepSeek R1 (Updated) (free)</option>
+                <option value="deepseek/deepseek-chat-v3-0324:free">DeepSeek V3 (free)</option>
+                <option value="moonshotai/kimi-dev-72b:free">Kimi Dev 72b (free)</option>
+                <option value="moonshotai/kimi-k2:free">Kimi K2 (free)</option>
+                <option value="google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash Experimental (free)</option>
+                <option value="meta-llama/llama-3.3-70b-instruct:free">Llama 3.3 70B (free)</option>
+                <option value="meta-llama/llama-3.2-3b-instruct:free">Llama 3.2 3B (free)</option>
+                <option value="meta-llama/llama-3.1-405b-instruct:free">Llama 3.1 405B (free)</option>
+                <option value="z-ai/glm-4.5-air:free">GLM 4.5 Air (free)</option>
+                <option value="mistralai/devstral-small-2505:free">Devstral Small 2505 (free)</option>
+            </select>
+        </div>
+        <div class="button-group">
+            <button id="enhanceBtn" class="enhance-btn">Enhance Prompt</button>
+            <button id="generateBtn" class="btn-primary">
+                <span class="btn-text">Generate</span>
+                <span class="loader" style="display: none;">Generating...</span>
+            </button>
+            <button id="stopBtn" class="btn-stop" style="display: none;">
+                <span>Stop</span>
+            </button>
+        </div>
+    </div>
+    <div class="suggestions-section">
+        <div class="suggestions-grid">
+            <div class="suggestion-card"
+                data-prompt="Create a fully responsive developer portfolio website using HTML, CSS, and JavaScript. It should include a hero section, project showcases, a skills section, an about me, and a contact form with JavaScript validation. Use clean design, smooth transitions, and responsive navigation.">
+                <span>Portfolio Website</span>
+            </div>
+            <div class="suggestion-card"
+                data-prompt="Develop a responsive calculator app using HTML, CSS, and JavaScript with a sleek, modern UI. Support basic arithmetic, memory/save functions, instant error handling, and a tactile keyboard interface. Include large, touch-friendly buttons, a real-time calculation display, and an adaptive layout for seamless use on mobile, tablet, and desktop.">
+                <span>Calculator App</span>
+            </div>
+            <div class="suggestion-card"
+                data-prompt="Build a visually engaging, fully responsive restaurant website front-end using HTML, CSS, and JavaScript. Feature a full-screen hero with enticing imagery, animated daily specials, a filterable digital menu with dietary tags, a reservation booking system, a customer reviews carousel, and a responsive layout.">
+                <span>Restaurant Frontend</span>
+            </div>
+            <div class="suggestion-card"
+                data-prompt="Craft a fully responsive modern digital agency portfolio using HTML, CSS, and JavaScript with bold branding, distinct team member profiles, visually organized services with icons, animated client testimonials, and detailed project case study walkthroughs. Add call-to-action sections, blog snippets, and smooth scroll navigation.">
+                <span>Agency Portfolio</span>
+            </div>
+            <div class="suggestion-card"
+                data-prompt="Design a fully responsive SaaS product landing page using HTML, CSS, and JavaScript, with a visually attractive onboarding flow, interactive pricing tiers, detailed feature comparison, trust-building customer testimonials, animated product demos, and responsive design.">
+                <span>SaaS Landing</span>
+            </div>
+            <div class="suggestion-card"
+                data-prompt="Construct a fully responsive modern blog website front-end using HTML, CSS, and JavaScript, featuring live article listings with preview images, fast, fuzzy search functionality, robust category and tag filtering, paginated archives, extensive author profile pages, and an easy theme switch (light/dark).">
+                <span>Blog Website</span>
+            </div>
+            <div class="suggestion-card"
+                data-prompt="Design a fully responsive, best-in-class e-commerce product page using HTML, CSS, and JavaScript, with a responsive image carousel, rich product details, interactive reviews, inventory status, wishlist/save functionality, a seamless shopping cart, a multi-step checkout, and personalized related product suggestions.">
+                <span>E-commerce Page</span>
+            </div>
+            <div class="suggestion-card"
+                data-prompt="Create a fully responsive weather application using HTML, CSS, and JavaScript, integrated with the OpenWeatherMap API, with real-time local weather, 5-day expandable forecasts, advanced location search, seamless toggle between Celsius and Fahrenheit, and adaptive layout for seamless use on mobile, tablet, and desktop.">
+                <span>Weather App</span>
+            </div>
+            <div class="suggestion-card"
+                data-prompt="Develop a fully responsive modern password generator web app using HTML, CSS, and JavaScript that allows users to customize password length, include/exclude character types (uppercase, lowercase, numbers, and symbols), and generate strong, secure passwords instantly. Incorporate accessible copy-to-clipboard functionality, a strength meter visualization, and a responsive, user-friendly interface.">
+                <span>Password Generator</span>
+            </div>
+        </div>
+    </div>
+    <div id="loadingSection" class="loading-section" style="display: none;">
+        <div class="loading-container">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+            <h3>WebLlama is generating your website</h3>
+            <p class="loading-text">Analyzing your request</p>
+        </div>
+    </div>
+    <div class="coding-section">
+        <div class="editor-preview-container" id="editorPreviewContainer" style="display: none;">
+            <div class="editor-panel">
+                <div class="editor-header">
+                    <div class="file-tabs">
+                        <button class="tab-btn active" data-file="html">index.html</button>
+                        <button class="tab-btn" data-file="css">style.css</button>
+                        <button class="tab-btn" data-file="js">script.js</button>
+                    </div>
+                    <div class="editor-actions">
+                        <button id="downloadBtn" class="btn-secondary" title="Download ZIP">
+                            <img src="/svg/download.svg" alt="download" class="download">
+                        </button>
+                        <button id="regenerateBtn" class="btn-secondary" title="Regenerate">
+                            <img src="/svg/refresh.svg" alt="refresh" class="refresh">
+                        </button>
+                    </div>
+                </div>
+                <div class="editor-content">
+                    <textarea id="htmlEditor" class="code-editor" placeholder="HTML code" spellcheck="false"></textarea>
+                    <textarea id="cssEditor" class="code-editor" placeholder="CSS code" spellcheck="false"
+                        style="display: none;">
+                    </textarea>
+                    <textarea id="jsEditor" class="code-editor" placeholder="JavaScript code" spellcheck="false"
+                        style="display: none;">
+                    </textarea>
+                </div>
+            </div>
+            <div class="preview-panel">
+                <div class="preview-header">
+                    <div class="device-controls">
+                        <button class="device-btn active" data-device="mobile" title="Mobile">
+                            <img src="/svg/device-mobile.svg" alt="device-mobile" class="device-mobile">
+                        </button>
+                        <button class="device-btn" data-device="tablet" title="Tablet">
+                            <img src="/svg/device-tablet.svg" alt="device-tablet" class="device-tablet">
+                        </button>
+                        <button class="device-btn" data-device="desktop" title="Desktop">
+                            <img src="/svg/device-desktop.svg" alt="device-desktop" class="device-desktop">
+                        </button>
+                        <button id="dragResizeBtn" class="device-link-btn" title="Responsive">
+                            <img src="/svg/devices.svg" alt="devices" class="devices">
+                        </button>
+                        <button id="openNewTabBtn" class="device-link-btn" title="View In New Tab">
+                            <img src="/svg/external-link.svg" alt="external-link" class="external-link">
+                        </button>
+                        <button id="fullscreenBtn" class="device-link-btn" title="Full Screen">
+                            <img src="/svg/maximize.svg" alt="maximize" class="maximize">
+                        </button>
+                    </div>
+                </div>
+                <div class="preview-container">
+                    <iframe id="previewFrame" class="preview-frame mobile"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="status-div">
+        <div id="statusMessage" class="status-message success">
+            Website generated successfully!
+        </div>
+    </div>
+    <script src="/script.js"></script>
+</body>
+
+</html>
