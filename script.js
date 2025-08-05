@@ -592,10 +592,18 @@ class AIWebsiteBuilder {
     }
 
     clearHistory() {
-        localStorage.removeItem('webllama_history');
-        this.renderHistory();
-        this.showStatus('History cleared', 'info');
+        localStorage.clear();
+        this.currentFiles = { html: '', css: '', js: '' };
+        this.currentPrompt = '';
+        this.htmlEditor.value = '';
+        this.cssEditor.value = '';
+        this.jsEditor.value = '';
+        this.previewFrame.src = '';
+        if (this.historyGrid)
+            this.historyGrid.innerHTML =
+                '<div class="no-history">No generation history yet.</div>';
         this.editorContainer.style.display = 'none';
+        this.showStatus('All local storage cleared.', 'info');
     }
 
     renderHistory() {
