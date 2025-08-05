@@ -258,7 +258,7 @@ header p {
     margin: 0 auto;
     background: #262626;
     border-radius: 1rem;
-    padding: 1rem;
+    padding: 1.5rem;
 }
 
 .history-header {
@@ -717,6 +717,10 @@ header p {
 }
 
 @media (max-width: 600px) {
+
+    .history-container {
+        padding: 1rem;
+    }
 
     .editor-header {
         flex-direction: column;
