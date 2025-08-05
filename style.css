@@ -315,6 +315,7 @@ header p {
 }
 
 .history-item-date {
+    text-transform: uppercase;
     font-size: 0.75rem;
     color: #808080;
 }
