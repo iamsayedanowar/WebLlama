@@ -93,6 +93,17 @@
             </div>
         </div>
     </div>
+    <section id="historySection" class="history-section" style="display: none;">
+        <div class="history-container">
+            <div class="history-header">
+                <h3>History</h3>
+                <button class="btn-clear-history">Clear All</button>
+            </div>
+            <div id="historyGrid" class="history-grid">
+                <div class="no-history">No generation history yet.</div>
+            </div>
+        </div>
+    </section>
     <div id="loadingSection" class="loading-section" style="display: none;">
         <div class="loading-container">
             <div class="loading-spinner">
@@ -141,9 +152,6 @@
                         </button>
                         <button class="device-btn" data-device="desktop" title="Desktop">
                             <img src="/svg/device-desktop.svg" alt="device-desktop" class="device-desktop">
-                        </button>
-                        <button id="dragResizeBtn" class="device-link-btn" title="Responsive">
-                            <img src="/svg/devices.svg" alt="devices" class="devices">
                         </button>
                         <button id="openNewTabBtn" class="device-link-btn" title="View In New Tab">
                             <img src="/svg/external-link.svg" alt="external-link" class="external-link">

@@ -248,6 +248,130 @@ header p {
     font-weight: 500;
 }
 
+.history-section {
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.history-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #262626;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.history-header h3 {
+    color: #FFFFFF;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.btn-clear-history {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 500px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    background: #EF4444;
+    color: #FFFFFF;
+    transition: 0.3s;
+}
+
+.btn-clear-history:hover {
+    background: #DB2424;
+}
+
+.history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.history-item {
+    background: #1A1A1A;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0);
+    transition: 0.3s;
+}
+
+.history-item:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.history-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.history-item-date {
+    font-size: 0.75rem;
+    color: #808080;
+}
+
+.history-item-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-load,
+.btn-delete {
+    padding: 0.25rem 0.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-load {
+    background: #0073E6;
+    color: #FFFFFF;
+}
+
+.btn-load:hover {
+    background: #0066CC;
+}
+
+.btn-delete {
+    background: #EF4444;
+    color: #FFFFFF;
+}
+
+.btn-delete:hover {
+    background: #DB2424;
+}
+
+.history-item-prompt {
+    font-size: 0.875rem;
+    color: #CCCCCC;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+}
+
+.history-item-model {
+    font-size: 0.75rem;
+    color: #808080;
+    font-style: italic;
+}
+
+.no-history {
+    text-align: center;
+    color: #808080;
+    font-style: italic;
+    padding: 2rem;
+}
+
 .loading-section {
     max-width: 786px;
     margin: 0 auto;
@@ -469,11 +593,6 @@ header p {
     height: auto;
 }
 
-.devices {
-    width: 20px;
-    height: auto;
-}
-
 .preview-container {
     flex: 1;
     padding: 1rem;
@@ -627,6 +746,14 @@ header p {
         flex-direction: column;
         align-items: stretch;
         gap: 0.5rem;
+    }
+
+}
+
+@media (max-width: 350px) {
+
+    .history-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     }
 
 }
