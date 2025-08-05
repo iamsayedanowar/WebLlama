@@ -74,6 +74,13 @@ class AIWebsiteBuilder {
         if (this.btnClearHistory) {
             this.btnClearHistory.addEventListener('click', () => this.clearHistory());
         }
+        // this.apiKeyInput.addEventListener('input', () => {
+        //     localStorage.setItem('openrouter_api_key', this.apiKeyInput.value);
+        // });
+        // const savedApiKey = localStorage.getItem('openrouter_api_key');
+        // if (savedApiKey) {
+        //     this.apiKeyInput.value = savedApiKey;
+        // }
     }
 
     validateApiKey() {
