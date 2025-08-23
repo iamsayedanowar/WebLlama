@@ -1,4 +1,6 @@
+// AIWEBSITEBUILDER CLASS
 class AIWebsiteBuilder {
+    // CONSTRUCTOR
     constructor() {
         this.apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
         this.currentFiles = {
@@ -17,6 +19,7 @@ class AIWebsiteBuilder {
         this.renderHistory();
     }
 
+    // ELEMENT INITIALIZATION
     initializeElements() {
         this.promptInput = document.getElementById('promptInput');
         this.apiKeyInput = document.getElementById('apiKeyInput');
@@ -42,6 +45,7 @@ class AIWebsiteBuilder {
         this.btnClearHistory = document.querySelector('.btn-clear-history');
     }
 
+    // EVENT BINDING
     bindEvents() {
         this.generateBtn.addEventListener('click', () => this.generateWebsite());
         this.enhanceBtn.addEventListener('click', () => this.enhancePrompt());
@@ -83,6 +87,7 @@ class AIWebsiteBuilder {
         // }
     }
 
+    // VALIDATE OPENROUTER API KEY FORMAT
     validateApiKey() {
         const apiKey = this.apiKeyInput.value.trim();
         if (!apiKey) {
@@ -98,10 +103,12 @@ class AIWebsiteBuilder {
         return true;
     }
 
+    // GET THE API KEY FROM INPUT FIELD
     getApiKey() {
         return this.apiKeyInput.value.trim();
     }
 
+    // ENHANCE THE USER’S PROMPT USING AI
     async enhancePrompt() {
         const prompt = this.promptInput.value.trim();
         if (!prompt) {
@@ -140,12 +147,10 @@ class AIWebsiteBuilder {
                 },
                 body: JSON.stringify({
                     model: this.modelSelect.value,
-                    messages: [
-                        {
-                            role: 'user',
-                            content: enhancePrompt
-                        }
-                    ],
+                    messages: [{
+                        role: 'user',
+                        content: enhancePrompt
+                    }],
                     temperature: 0.5,
                 }),
                 signal: this.abortController.signal
@@ -178,6 +183,7 @@ class AIWebsiteBuilder {
         }
     }
 
+    // OPEN PREVIEW IN A NEW TAB
     openPreviewInNewTab() {
         const htmlContent = `<!DOCTYPE html>
         <html lang="en">
@@ -196,12 +202,15 @@ class AIWebsiteBuilder {
             </script>
         </body>
         </html>`;
-        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const blob = new Blob([htmlContent], {
+            type: 'text/html'
+        });
         const url = URL.createObjectURL(blob);
         window.open(url, '_blank');
         setTimeout(() => URL.revokeObjectURL(url), 60000);
     }
 
+    // GENERATE A WEBSITE FROM USER’S PROMPT
     async generateWebsite() {
         const prompt = this.promptInput.value.trim();
         if (!prompt) {
@@ -241,6 +250,7 @@ class AIWebsiteBuilder {
         }
     }
 
+    // START GENERATION
     startGeneration() {
         this.isGenerating = true;
         this.abortController = new AbortController();
@@ -250,9 +260,12 @@ class AIWebsiteBuilder {
         this.enhanceBtn.disabled = true;
         this.stopBtn.style.display = 'block';
         this.loadingSection.style.display = 'block';
-        this.loadingSection.scrollIntoView({ behavior: 'smooth' });
+        this.loadingSection.scrollIntoView({
+            behavior: 'smooth'
+        });
     }
 
+    // STOP GENERATION
     stopGeneration() {
         if (this.abortController) {
             this.abortController.abort();
@@ -266,6 +279,7 @@ class AIWebsiteBuilder {
         this.loadingSection.style.display = 'none';
     }
 
+    // SHOW ANIMATED LOADING MESSAGES DURING GENERATION
     showLoadingMessages() {
         const messages = [
             "Analyzing your request",
@@ -286,8 +300,9 @@ class AIWebsiteBuilder {
         }, 2000);
     }
 
+    // OPENROUTER API CALL
     async callOpenRouterAPI(prompt) {
-        const systemPrompt = `You are an expert web developer. Your task is to generate a complete, visually stunning, and fully responsive website based on the user's description. 
+        const systemPrompt = `You are an expert web developer. Your task is to generate a complete, visually stunning, and fully responsive website based on the user's description.
 
         Generate clean, semantic HTML, modern CSS with responsive design, and functional JavaScript if needed. The website should be:
         - Fully responsive (mobile-first design)
@@ -297,20 +312,20 @@ class AIWebsiteBuilder {
         - Use modern CSS features (flexbox, grid, etc.)
         - Include smooth animations and transitions
         - Follow best practices
-            
+
         Return ONLY the code in this exact format:
         <!-- HTML_START -->
         [HTML code here]
         <!-- HTML_END -->
-            
+
         <!-- CSS_START -->
         [CSS code here]
         <!-- CSS_END -->
-            
+
         <!-- JS_START -->
         [JavaScript code here]
         <!-- JS_END -->
-            
+
         Make sure the output is a complete, professional-grade website ready for deployment.`;
         const response = await fetch(this.apiUrl, {
             method: 'POST',
@@ -322,15 +337,14 @@ class AIWebsiteBuilder {
             },
             body: JSON.stringify({
                 model: this.modelSelect.value,
-                messages: [
-                    {
-                        role: 'system',
-                        content: systemPrompt
-                    },
-                    {
-                        role: 'user',
-                        content: prompt
-                    }
+                messages: [{
+                    role: 'system',
+                    content: systemPrompt
+                },
+                {
+                    role: 'user',
+                    content: prompt
+                }
                 ],
                 temperature: 0.5,
             }),
@@ -344,6 +358,7 @@ class AIWebsiteBuilder {
         return data.choices[0].message.content;
     }
 
+    // PARSE GENERATED HTML, CSS, JS CODE INTO EDITORS
     parseGeneratedCode(generatedCode) {
         const htmlMatch = generatedCode.match(/<!-- HTML_START -->([\s\S]*?)<!-- HTML_END -->/);
         this.currentFiles.html = htmlMatch ? htmlMatch[1].trim() : this.createFallbackHTML();
@@ -356,6 +371,7 @@ class AIWebsiteBuilder {
         this.jsEditor.value = this.currentFiles.js;
     }
 
+    // CREATE FALLBACK HTML IF AI OUTPUT IS INVALID
     createFallbackHTML() {
         return `<!DOCTYPE html>
         <html lang="en">
@@ -383,6 +399,7 @@ class AIWebsiteBuilder {
         </html>`;
     }
 
+    // CREATE FALLBACK CSS IF AI OUTPUT IS INVALID
     createFallbackCSS() {
         return `* {
             margin: 0;
@@ -416,12 +433,16 @@ class AIWebsiteBuilder {
         }`;
     }
 
+    // SHOW THE CODE EDITOR PANEL
     showEditor() {
         this.editorContainer.style.display = 'flex';
-        this.editorContainer.scrollIntoView({ behavior: 'smooth' });
+        this.editorContainer.scrollIntoView({
+            behavior: 'smooth'
+        });
         this.showHistory();
     }
 
+    // SWITCH BETWEEN HTML, CSS, AND JS EDITOR TABS
     switchFile(fileType) {
         this.tabBtns.forEach(btn => btn.classList.remove('active'));
         document.querySelector(`[data-file="${fileType}"]`).classList.add('active');
@@ -437,12 +458,14 @@ class AIWebsiteBuilder {
         this.activeFile = fileType;
     }
 
+    // SWITCH PREVIEW FRAME BETWEEN MOBILE/TABLET/DESKTOP
     switchDevice(deviceType) {
         this.deviceBtns.forEach(btn => btn.classList.remove('active'));
         document.querySelector(`[data-device="${deviceType}"]`).classList.add('active');
         this.previewFrame.className = `preview-frame ${deviceType}`;
     }
 
+    // HANDLE MANUAL EDITS IN EDITORS
     onCodeChange(fileType) {
         const editors = {
             html: this.htmlEditor,
@@ -454,14 +477,18 @@ class AIWebsiteBuilder {
         this.saveCurrentState();
     }
 
+    // UPDATE PREVIEW FRAME WITH COMBINED CODE
     updatePreview() {
         const combinedHTML = this.combineFiles();
-        const blob = new Blob([combinedHTML], { type: 'text/html' });
+        const blob = new Blob([combinedHTML], {
+            type: 'text/html'
+        });
         const url = URL.createObjectURL(blob);
         this.previewFrame.src = url;
         setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
 
+    // COMBINE HTML, CSS, AND JS INTO A FULL HTML DOCUMENT
     combineFiles() {
         let html = this.currentFiles.html;
         if (this.currentFiles.css) {
@@ -483,6 +510,7 @@ class AIWebsiteBuilder {
         return html;
     }
 
+    // DOWNLOAD GENERATED WEBSITE AS A ZIP
     async downloadWebsite() {
         if (!this.currentFiles.html && !this.currentFiles.css && !this.currentFiles.js) {
             this.showStatus('No website to download. Generate a website first.', 'error');
@@ -506,7 +534,9 @@ class AIWebsiteBuilder {
             1. Extract all files to a folder
             2. Open index.html in a web browser
             3. Customize as needed`);
-            const content = await zip.generateAsync({ type: 'blob' });
+            const content = await zip.generateAsync({
+                type: 'blob'
+            });
             const url = URL.createObjectURL(content);
             const link = document.createElement('a');
             link.href = url;
@@ -521,6 +551,7 @@ class AIWebsiteBuilder {
         }
     }
 
+    // SHOW STATUS MESSAGES
     showStatus(message, type = 'info') {
         this.statusMessage.textContent = message;
         this.statusMessage.className = `status-message ${type}`;
@@ -532,11 +563,13 @@ class AIWebsiteBuilder {
         }
     }
 
+    // GET WEBSITE GENERATION HISTORY FROM LOCALSTORAGE
     getHistory() {
         const stored = localStorage.getItem('webllama_history');
         return stored ? JSON.parse(stored) : [];
     }
 
+    // SAVE NEWLY GENERATED WEBSITE TO HISTORY
     saveToHistory(prompt, model, files) {
         const historyItem = {
             id: Date.now(),
@@ -545,9 +578,14 @@ class AIWebsiteBuilder {
             files: files,
             timestamp: new Date().toLocaleTimeString(
                 'en-IN', {
-                timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true
+                timeZone: 'Asia/Kolkata',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
             }),
-            date: new Date().toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' })
+            date: new Date().toLocaleDateString('en-IN', {
+                timeZone: 'Asia/Kolkata'
+            })
         };
 
         let history = this.getHistory();
@@ -559,11 +597,14 @@ class AIWebsiteBuilder {
         this.renderHistory();
     }
 
+    // LOAD WEBSITE FROM HISTORY
     loadFromHistory(historyId) {
         const history = this.getHistory();
         const item = history.find(h => h.id === historyId);
         if (item) {
-            this.currentFiles = { ...item.files };
+            this.currentFiles = {
+                ...item.files
+            };
             this.htmlEditor.value = item.files.html || '';
             this.cssEditor.value = item.files.css || '';
             this.jsEditor.value = item.files.js || '';
@@ -576,6 +617,7 @@ class AIWebsiteBuilder {
         }
     }
 
+    // DELETE A WEBSITE FROM HISTORY
     deleteFromHistory(historyId) {
         const deletedItem = this.getHistory().find(i => i.id === historyId);
         let history = this.getHistory().filter(i => i.id !== historyId);
@@ -583,7 +625,11 @@ class AIWebsiteBuilder {
         this.renderHistory();
         this.showStatus('Item deleted from history', 'info');
         if (deletedItem && this.currentPrompt === deletedItem.prompt) {
-            this.currentFiles = { html: '', css: '', js: '' };
+            this.currentFiles = {
+                html: '',
+                css: '',
+                js: ''
+            };
             this.htmlEditor.value = '';
             this.cssEditor.value = '';
             this.jsEditor.value = '';
@@ -591,9 +637,14 @@ class AIWebsiteBuilder {
         }
     }
 
+    // CLEAR ENTIRE HISTORY AND RESET
     clearHistory() {
         localStorage.clear();
-        this.currentFiles = { html: '', css: '', js: '' };
+        this.currentFiles = {
+            html: '',
+            css: '',
+            js: ''
+        };
         this.currentPrompt = '';
         this.htmlEditor.value = '';
         this.cssEditor.value = '';
@@ -606,6 +657,7 @@ class AIWebsiteBuilder {
         this.showStatus('All local storage cleared.', 'info');
     }
 
+    // RENDER HISTORY ITEMS IN THE LIST
     renderHistory() {
         const history = this.getHistory();
         if (!this.historyGrid) return;
@@ -630,6 +682,7 @@ class AIWebsiteBuilder {
         `).join('');
     }
 
+    // SHOW HISTORY SECTION
     showHistory() {
         if (this.historySection) {
             this.historySection.style.display = 'block';
@@ -637,12 +690,14 @@ class AIWebsiteBuilder {
         }
     }
 
+    // HIDE HISTORY SECTION
     hideHistory() {
         if (this.historySection) {
             this.historySection.style.display = 'none';
         }
     }
 
+    // SAVE CURRENT STATE TO LOCALSTORAGE
     saveCurrentState() {
         if (this.currentFiles.html || this.currentFiles.css || this.currentFiles.js) {
             const currentState = {
@@ -654,11 +709,16 @@ class AIWebsiteBuilder {
         }
     }
 
+    // LOAD CURRENT STATE FROM LOCALSTORAGE
     loadCurrentState() {
         const stored = localStorage.getItem('webllama_current_state');
         if (stored) {
             const state = JSON.parse(stored);
-            this.currentFiles = state.files || { html: '', css: '', js: '' };
+            this.currentFiles = state.files || {
+                html: '',
+                css: '',
+                js: ''
+            };
             this.currentPrompt = state.prompt || '';
             if (state.model) {
                 this.modelSelect.value = state.model;
@@ -678,6 +738,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.websiteBuilder = new AIWebsiteBuilder();
 });
 
+// FULLSCREEN PREVIEW
 const previewFrame = document.getElementById('previewFrame');
 const fullscreenBtn = document.getElementById('fullscreenBtn');
 
